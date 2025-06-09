@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行政工作 履歷範本 下載 - Google 搜尋</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: #202124;
+            font-size: 14px;
+            line-height: 1.58;
+        }
+        
+        /* 頂部導航欄 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 100;
+            border-bottom: 1px solid #dfe1e5;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 30px;
+            margin-right: 20px;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            width: 692px;
+            height: 46px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 0 15px;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        }
+        
+        .search-container:hover {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.40);
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .search-icon {
+            color: #9aa0a6;
+            font-size: 18px;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-icon {
+            color: #5f6368;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        .profile-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+            background-color: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 搜尋結果 */
+        .container {
+            max-width: 652px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-top: 20px;
+            border-bottom: 1px solid #e8eaed;
+            font-size: 13px;
+        }
+        
+        .tab {
+            padding: 16px 12px;
+            margin-right: 20px;
+            color: #5f6368;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .tab.active {
+            color: #1a73e8;
+            font-weight: 500;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1a73e8;
+        }
+        
+        .tab i {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+        
+        .search-info {
+            margin-top: 12px;
+            color: #70757a;
+            font-size: 14px;
+        }
+        
+        .result {
+            margin: 30px 0;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            margin-bottom: 6px;
+            font-weight: normal;
+        }
+        
+        .result-title a {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+        
+        .result-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        
+        .result-snippet {
+            color: #545454;
+            font-size: 14px;
+            line-height: 1.58;
+        }
+        
+        .ad-label {
+            display: inline-block;
+            color: #006621;
+            font-size: 12px;
+            padding: 2px 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            background-color: #fff;
+            border: 1px solid #006621;
+        }
+        
+        .ad-container {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #dfe1e5;
+        }
+        
+        .ad-group {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e8eaed;
+        }
+
+        .warning-box {
+            background-color: #fef9c3;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #92400e;
+        }
+        
+        .warning-box h3 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #b45309;
+        }
+        
+        .warning-box h3 i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .warning-box p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .warning-box ul {
+            margin-left: 30px;
+        }
+        
+        .warning-box li {
+            margin-bottom: 5px;
+        }
+        
+        .genuine-result {
+            border-left: 4px solid #4ade80;
+            padding-left: 15px;
+        }
+        
+        .side-note {
+            background-color: #e4e4e7;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 頂部導航欄 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" class="logo">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" value="行政工作 履歷範本 下載">
+                <i class="fas fa-keyboard navbar-icon"></i>
+                <i class="fas fa-microphone navbar-icon"></i>
+                <i class="fas fa-camera navbar-icon"></i>
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <i class="fas fa-cog navbar-icon"></i>
+            <div class="profile-image">豪</div>
+        </div>
+    </div>
+    
+    <!-- 搜尋結果 -->
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active">
+                <i class="fas fa-search"></i>
+                全部
+            </div>
+            <div class="tab">
+                <i class="fas fa-image"></i>
+                圖片
+            </div>
+            <div class="tab">
+                <i class="fas fa-shopping-cart"></i>
+                購物
+            </div>
+            <div class="tab">
+                <i class="fas fa-video"></i>
+                影片
+            </div>
+            <div class="tab">
+                <i class="fas fa-map-marker-alt"></i>
+                地圖
+            </div>
+            <div class="tab">
+                <i class="fas fa-ellipsis-v"></i>
+                更多
+            </div>
+        </div>
+        
+        <div class="search-info">
+            約有 12,300,000 項結果 (0.52 秒)
+        </div>
+      
+        
+        <!-- 釣魚廣告範例 -->
+        <div class="ad-container">
+            <div class="ad-label">廣告</div>
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">【2024最新】專業行政履歷範本下載 - 100%保證面試通過</a>
+                </h3>
+                <div class="result-url">www.premium-resume-templates.com.tw-download.net/admin-templates</div>
+                <div class="result-snippet">
+                    <strong>免費下載</strong>高品質行政工作履歷範本！✓企業指定模板 ✓24小時內面試邀請保證 ✓台大HR親自審核。<strong>限時優惠：</strong>今日下載即送面試技巧指南 + 履歷健檢服務！<strong>立即輸入email下載！</strong>
+                </div>
+            </div>
+            
+            <div class="ad-group">
+                <div class="result">
+                    <h3 class="result-title">
+                        <a href="#">專業行政助理履歷範本 | 免費註冊立即下載</a>
+                    </h3>
+                    <div class="result-url">www.104-resume-examples.com-free.org/office-admin</div>
+                    <div class="result-snippet">
+                        想要脫穎而出？立即下載我們的行政助理專用履歷範本，<strong>近3000名求職者成功獲得面試機會</strong>。只需填寫基本資料和手機號碼進行簡訊驗證，即可立即下載高品質範本！
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ad-group">
+                <div class="result">
+                    <h3 class="result-title">
+                        <a href="#">【限時免費】行政專員完勝履歷寶典 - 立即索取</a>
+                    </h3>
+                    <div class="result-url">free-templates.career-boost.net.tw-secure.xyz/download</div>
+                    <div class="result-snippet">
+                        應屆畢業生專用！我們的行政工作履歷範本已幫助5000+台大畢業生成功就業。<strong>今日特惠：</strong>下載前10名可獲得一對一履歷診斷！<strong>需先完成註冊並驗證手機號碼</strong>，保證不收費！
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="side-note">
+            <strong>注意：</strong>以上廣告展示了常見釣魚特徵：誇張的承諾、緊迫感、不明確的網址、要求個人資訊等。
+        </div>
+        
+        <!-- 合法搜尋結果 -->
+        <div class="genuine-result">
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">行政人員履歷範本下載 | 104人力銀行</a>
+                </h3>
+                <div class="result-url">www.104.com.tw/jb/resume/templates/administrative</div>
+                <div class="result-snippet">
+                    提供多款行政人員專用履歷範本，包含文書處理、活動規劃、行政管理等不同職務需求。所有範本均由專業HR人員設計審核，完全免費下載，無需註冊即可使用。
+                </div>
+            </div>
+        </div>
+        
+        <div class="genuine-result">
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">2024年行政工作履歷撰寫指南與範本 | 政府就業服務網</a>
+                </h3>
+                <div class="result-url">www.taiwanjobs.gov.tw/guides/resume/administrative</div>
+                <div class="result-snippet">
+                    政府就業服務網提供的專業履歷範本與撰寫建議，專為行政職位求職者設計。包含多種格式檔案(PDF、Word、OpenOffice)，完全免費下載。另有履歷健檢與面試準備資源，協助求職者提升就業競爭力。
+                </div>
+            </div>
+        </div>
+        
+        <div class="genuine-result">
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">20個免費行政人員履歷範本與範例 | Canva 模板</a>
+                </h3>
+                <div class="result-url">www.canva.com/zh-tw/templates/resumes/administrative</div>
+                <div class="result-snippet">
+                    在Canva上探索並下載專業的行政人員履歷範本。所有模板皆可自由編輯、輕鬆客製化，讓您的履歷脫穎而出。提供免費下載選項，無須輸入信用卡資訊。立即開始設計您的專業履歷！
+                </div>
+            </div>
+        </div>
+        
+        <div class="genuine-result">
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">行政助理履歷撰寫技巧與範本下載 | LinkedIn 求職指南</a>
+                </h3>
+                <div class="result-url">www.linkedin.com/learning/resume-writing/administrative-assistant</div>
+                <div class="result-snippet">
+                    LinkedIn專家分享如何撰寫有效的行政助理履歷，附帶實用範本下載。文章包含：如何突顯行政能力、關鍵字優化技巧、面試準備要點等。登入LinkedIn會員可免費下載多款履歷範本，立即提升求職競爭力！
+                </div>
+            </div>
+        </div>
+        
+        <div class="genuine-result">
+            <div class="result">
+                <h3 class="result-title">
+                    <a href="#">企管系畢業生適用的行政工作履歷模板 | 職涯中心</a>
+                </h3>
+                <div class="result-url">career.ntu.edu.tw/resources/templates/administrative</div>
+                <div class="result-snippet">
+                    職涯中心提供的行政工作履歷範本，特別為企管系等商學院畢業生設計。範本包含實習經驗呈現、專案成果展示等區塊，有助於展現應屆畢業生的潛力。免費下載，支援Word格式編輯。
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+
+    <script>
+        // 點擊提示
+        document.querySelectorAll('a, .navbar-icon, .profile-image, .tab').forEach(element => {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('這只是一個展示用的介面，展示Google搜尋結果中的廣告釣魚風險。在真實情境中，點擊釣魚廣告可能導致個人資訊被盜或遭遇詐騙。');
+            });
+        });
+    </script>
+</body>
+</html>
