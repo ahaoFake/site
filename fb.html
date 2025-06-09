@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - 阿豪</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+        
+        /* 頂部導航欄 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 0 16px;
+            height: 56px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            color: #1877f2;
+            font-size: 40px;
+            margin-right: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .search-bar {
+            background-color: #f0f2f5;
+            border-radius: 50px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar i {
+            margin-right: 8px;
+            color: #65676b;
+        }
+        
+        .search-bar input {
+            border: none;
+            background-color: transparent;
+            outline: none;
+            font-size: 15px;
+            width: 240px;
+        }
+        
+        .navbar-center {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-icon {
+            color: #65676b;
+            font-size: 24px;
+            margin: 0 20px;
+            padding: 10px 40px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .nav-icon.active {
+            color: #1877f2;
+            border-bottom: 3px solid #1877f2;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 8px;
+        }
+        
+        .profile span {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .icon-btn {
+            background-color: #e4e6eb;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        
+        /* 主要內容 */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        
+        .sidebar {
+            width: 360px;
+            margin-right: 20px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-item:hover {
+            background-color: #e4e6eb;
+        }
+        
+        .menu-item img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .menu-item span {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .content {
+            width: 680px;
+        }
+        
+        .create-post {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .create-post-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .create-post-top img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .create-post-input {
+            flex: 1;
+            background-color: #f0f2f5;
+            border-radius: 50px;
+            padding: 8px 16px;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        .create-post-bottom {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+            border-top: 1px solid #e4e6eb;
+        }
+        
+        .post-option {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .post-option:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .post-option i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .post-option.photo i {
+            color: #45bd62;
+        }
+        
+        .post-option.tag i {
+            color: #1877f2;
+        }
+        
+        .post-option.feeling i {
+            color: #f7b928;
+        }
+        
+        .post {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .post-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .post-top img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .post-info {
+            flex: 1;
+        }
+        
+        .post-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .post-info span {
+            font-size: 13px;
+            color: #65676b;
+        }
+        
+        .post-content {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e4e6eb;
+            font-size: 14px;
+            color: #65676b;
+        }
+        
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .post-action:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .post-action i {
+            margin-right: 4px;
+            font-size: 18px;
+        }
+        
+        .right-sidebar {
+            width: 360px;
+            margin-left: 20px;
+        }
+        
+        .contacts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0 8px;
+        }
+        
+        .contacts-header h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #65676b;
+        }
+        
+        .contacts-header-icons {
+            display: flex;
+        }
+        
+        .contacts-header-icon {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #65676b;
+        }
+        
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .contact:hover {
+            background-color: #e4e6eb;
+        }
+        
+        .contact img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .contact span {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .active-indicator {
+            position: relative;
+        }
+        
+        .active-indicator::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #31a24c;
+            border-radius: 50%;
+            border: 2px solid white;
+            bottom: 0;
+            right: 0;
+        }
+        
+        .comments-section {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e4e6eb;
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .comment img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .comment-content {
+            background-color: #f0f2f5;
+            border-radius: 18px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        .comment-user {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+        
+        .write-comment {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .write-comment img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .comment-input {
+            flex: 1;
+            background-color: #f0f2f5;
+            border-radius: 50px;
+            padding: 8px 12px;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .location-tag {
+            display: flex;
+            align-items: center;
+            color: #1877f2;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        
+        .location-tag i {
+            margin-right: 4px;
+            font-size: 14px;
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 1200px) {
+            .sidebar, .right-sidebar {
+                display: none;
+            }
+            
+            .content {
+                width: 100%;
+                max-width: 680px;
+                padding: 0 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-center {
+                display: none;
+            }
+            
+            .search-bar input {
+                width: 120px;
+            }
+            
+            .profile span {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 頂部導航欄 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <a href="#" class="logo">f</a>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜尋 Facebook">
+            </div>
+        </div>
+        
+        <div class="navbar-center">
+            <div class="nav-icon active">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-tv"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-gamepad"></i>
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <div class="profile">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                <span>阿豪</span>
+            </div>
+            <div class="icon-btn">
+                <i class="fas fa-th"></i>
+            </div>
+            <div class="icon-btn">
+                <i class="fab fa-facebook-messenger"></i>
+            </div>
+            <div class="icon-btn">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="icon-btn">
+                <i class="fas fa-caret-down"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 左側邊欄 -->
+        <div class="sidebar">
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                <span>黃阿豪</span>
+            </div>
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/youtube.svg" alt="影片">
+                <span>朋友</span>
+            </div>
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/messenger.svg" alt="朋友">
+                <span>最新動態</span>
+            </div>
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/instagram.svg" alt="最新動態">
+                <span>社團</span>
+            </div>
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/github.svg" alt="社團">
+                <span>活動</span>
+            </div>
+            <div class="menu-item">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/twitter.svg" alt="收藏">
+                <span>收藏</span>
+            </div>
+        </div>
+        
+        <!-- 中間內容 -->
+        <div class="content">
+            <!-- 發表貼文區塊 -->
+            <div class="create-post">
+                <div class="create-post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <input type="text" class="create-post-input" placeholder="阿豪，你在想什麼？">
+                </div>
+                <div class="create-post-bottom">
+                    <div class="post-option photo">
+                        <i class="fas fa-photo-video"></i>
+                        <span>照片/影片</span>
+                    </div>
+                    <div class="post-option tag">
+                        <i class="fas fa-user-tag"></i>
+                        <span>標記朋友</span>
+                    </div>
+                    <div class="post-option feeling">
+                        <i class="far fa-laugh"></i>
+                        <span>感受/活動</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 貼文 -->
+            <div class="post">
+                <div class="post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <div class="post-info">
+                        <h3>黃阿豪</h3>
+                        <span>今天早上 08:15 · <i class="fas fa-globe-americas"></i></span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    今天要去面試了！第一份正式工作面試，好緊張😅 公司在忠孝東路那邊，不知道從松山站過去會不會太早到？打算七點出門，可以在附近吃個早餐再過去。
+                    <br><br>
+                    有沒有人知道那邊有什麼好吃的早餐店推薦？希望面試順利！
+                </div>
+                <div class="post-stats">
+                    <span><i class="far fa-thumbs-up"></i> 24</span>
+                    <span>5 則留言</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>讚</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>留言</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/github.svg" alt="小明">
+                        <div class="comment-content">
+                            <span class="comment-user">林小明</span>
+                            祝你面試順利！忠孝東路那邊有間「晨間廚房」的早餐店不錯喔！就在忠孝東路一段58號附近，離捷運站大概5分鐘路程。
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <div class="comment-content">
+                            <span class="comment-user">黃阿豪</span>
+                            謝謝推薦！我查了一下地圖，剛好在我要面試的公司附近，太棒了！
+                        </div>
+                    </div>
+                    
+                    <div class="write-comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <input type="text" class="comment-input" placeholder="留言...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post">
+                <div class="post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <div class="post-info">
+                        <h3>黃阿豪</h3>
+                        <span>昨天 20:30 · <i class="fas fa-globe-americas"></i></span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    終於畢業了！四年大學生活一晃而過，太感謝一路上遇到的每個人。特別感謝系辦的張主任，給了我實習的機會！
+                    <br><br>
+                    明天就要開始找工作了，希望能找到理想的行政職位！如果有人知道哪裡有在徵行政人員，請告訴我，謝謝！
+                </div>
+                <div class="post-image" style="background-color: #4267B2;">
+                    畢業照片
+                </div>
+                <div class="post-stats">
+                    <span><i class="far fa-thumbs-up"></i> 89</span>
+                    <span>23 則留言</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>讚</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>留言</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/twitter.svg" alt="小華">
+                        <div class="comment-content">
+                            <span class="comment-user">王小華</span>
+                            恭喜畢業！我公司正好在徵行政人員，有興趣的話私訊我，可以幫你內推！
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <div class="comment-content">
+                            <span class="comment-user">黃阿豪</span>
+                            太好了！我等等就私訊你，謝謝！
+                        </div>
+                    </div>
+                    
+                    <div class="write-comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <input type="text" class="comment-input" placeholder="留言...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post">
+                <div class="post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <div class="post-info">
+                        <h3>黃阿豪</h3>
+                        <span>6月5日 12:45 · <i class="fas fa-globe-americas"></i></span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    今天在這家咖啡廳讀書，環境超棒！而且他們家的拿鐵真的很好喝，我每次讀書都會來這裡，店員都認識我了哈哈。今天要在這裡待到九點，把畢業專題最後一部分完成！
+                </div>
+                <div class="post-image" style="background-color: #bb9a71;">
+                    咖啡廳照片
+                </div>
+                <div class="location-tag">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>在 Blue Note Cafe・台北市信義區松智路17號</span>
+                </div>
+                <div class="post-stats">
+                    <span><i class="far fa-thumbs-up"></i> 15</span>
+                    <span>3 則留言</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>讚</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>留言</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/youtube.svg" alt="小芳">
+                        <div class="comment-content">
+                            <span class="comment-user">陳小芳</span>
+                            這家我也常去！他們家的提拉米蘇也超讚，下次可以點來試試！
+                        </div>
+                    </div>
+                    
+                    <div class="write-comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <input type="text" class="comment-input" placeholder="留言...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post">
+                <div class="post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <div class="post-info">
+                        <h3>黃阿豪</h3>
+                        <span>6月2日 17:20 · <i class="fas fa-globe-americas"></i></span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    今天開始練習健身了！決定每週一三五下班後去健身房，希望三個月後能看到明顯成效。謝謝室友小明推薦的健身房，離家走路只要10分鐘超方便！
+                </div>
+                <div class="post-image" style="background-color: #1877f2;">
+                    健身房照片
+                </div>
+                <div class="location-tag">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>在 Fitness First・台北市松山區復興北路99號B1</span>
+                </div>
+                <div class="post-stats">
+                    <span><i class="far fa-thumbs-up"></i> 32</span>
+                    <span>7 則留言</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>讚</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>留言</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/github.svg" alt="小明">
+                        <div class="comment-content">
+                            <span class="comment-user">林小明</span>
+                            讚啦！我週三晚上七點也會去，要不要一起？
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <div class="comment-content">
+                            <span class="comment-user">黃阿豪</span>
+                            好啊！我也差不多那時候會去，到時候門口見！
+                        </div>
+                    </div>
+                    
+                    <div class="write-comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <input type="text" class="comment-input" placeholder="留言...">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post">
+                <div class="post-top">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                    <div class="post-info">
+                        <h3>黃阿豪</h3>
+                        <span>5月28日 09:10 · <i class="fas fa-globe-americas"></i></span>
+                    </div>
+                </div>
+                <div class="post-content">
+                    下週要去澎湖玩三天兩夜！6/1-6/3，好期待啊！這是畢業前最後一次旅行了，打算好好放鬆一下。
+                    <br><br>
+                    有沒有人知道澎湖有什麼必去的景點或必吃的美食？還有哪家民宿比較推薦？謝謝大家！
+                </div>
+                <div class="post-image" style="background-color: #3db9dc;">
+                    澎湖風景照
+                </div>
+                <div class="post-stats">
+                    <span><i class="far fa-thumbs-up"></i> 76</span>
+                    <span>18 則留言</span>
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">
+                        <i class="far fa-thumbs-up"></i>
+                        <span>讚</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="far fa-comment"></i>
+                        <span>留言</span>
+                    </div>
+                    <div class="post-action">
+                        <i class="fas fa-share"></i>
+                        <span>分享</span>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/messenger.svg" alt="小美">
+                        <div class="comment-content">
+                            <span class="comment-user">李小美</span>
+                            藍洞和奎壁山一定要去！還有必吃花枝丸和仙人掌冰淇淋！我們上次住在「海景民宿」，離沙灘超近而且老闆人很好！
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/instagram.svg" alt="大雄">
+                        <div class="comment-content">
+                            <span class="comment-user">張大雄</span>
+                            推薦你租機車環島，可以看到很多私房景點！記得防曬，澎湖太陽超強！
+                        </div>
+                    </div>
+                    
+                    <div class="write-comment">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/facebook.svg" alt="阿豪">
+                        <input type="text" class="comment-input" placeholder="留言...">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右側邊欄 -->
+        <div class="right-sidebar">
+            <div class="contacts-header">
+                <h4>聯絡人</h4>
+                <div class="contacts-header-icons">
+                    <div class="contacts-header-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="contacts-header-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="contacts-header-icon">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact active-indicator">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/github.svg" alt="小明">
+                <span>林小明</span>
+            </div>
+            
+            <div class="contact">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/youtube.svg" alt="小芳">
+                <span>陳小芳</span>
+            </div>
+            
+            <div class="contact active-indicator">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/twitter.svg" alt="小華">
+                <span>王小華</span>
+            </div>
+            
+            <div class="contact">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/instagram.svg" alt="大雄">
+                <span>張大雄</span>
+            </div>
+            
+            <div class="contact active-indicator">
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/messenger.svg" alt="小美">
+                <span>李小美</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 點擊事件
+        document.querySelectorAll('.post-action, .nav-icon, .menu-item, .contact, .icon-btn').forEach(element => {
+            element.addEventListener('click', function() {
+                alert('這只是一個展示用的介面，按鈕沒有實際功能。');
+            });
+        });
+        
+        // 模擬"讚"功能
+        document.querySelectorAll('.post-action:first-child').forEach(likeBtn => {
+            likeBtn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.style.color = '#1877f2';
+                    this.querySelector('span').style.color = '#1877f2';
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    icon.style.color = '';
+                    this.querySelector('span').style.color = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
