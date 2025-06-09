@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail - 面試補件通知</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f6f8fc;
+            color: #202124;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 頂部導航欄 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 8px 16px;
+            height: 64px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .menu-icon {
+            color: #5f6368;
+            font-size: 24px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        
+        .logo {
+            height: 40px;
+            margin-right: 16px;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            width: 720px;
+            height: 48px;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            padding: 0 16px;
+        }
+        
+        .search-container:hover {
+            background-color: #e8eaed;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-icon {
+            color: #5f6368;
+            font-size: 20px;
+            margin-right: 12px;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            background-color: transparent;
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-icon {
+            color: #5f6368;
+            font-size: 20px;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        .profile-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-left: 16px;
+            cursor: pointer;
+            background-color: #1a73e8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 主要內容 */
+        .container {
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+        
+        /* 左側邊欄 */
+        .sidebar {
+            width: 256px;
+            background-color: #fff;
+            padding: 8px 0;
+            overflow-y: auto;
+        }
+        
+        .compose-btn {
+            display: flex;
+            align-items: center;
+            margin: 8px 8px 16px 8px;
+            padding: 12px 24px;
+            background-color: #c2e7ff;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .compose-btn:hover {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .compose-btn i {
+            margin-right: 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 24px;
+            color: #202124;
+            cursor: pointer;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        
+        .menu-item:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .menu-item.active {
+            background-color: #d3e3fd;
+            font-weight: 500;
+        }
+        
+        .menu-item i {
+            margin-right: 16px;
+            font-size: 18px;
+            color: #5f6368;
+        }
+        
+        .menu-item.active i {
+            color: #1a73e8;
+        }
+        
+        .menu-item .count {
+            margin-left: auto;
+            font-weight: 500;
+            color: #5f6368;
+        }
+        
+        .menu-category {
+            padding: 8px 24px;
+            color: #5f6368;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-top: 16px;
+        }
+        
+        /* 電子郵件詳情 */
+        .email-detail {
+            flex: 1;
+            background-color: #fff;
+            margin: 16px;
+            border-radius: 16px;
+            overflow-y: auto;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .email-detail-header {
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .email-detail-subject {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+        
+        .email-detail-meta {
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-detail-sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 16px;
+            background-color: #f5ba13;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .email-detail-sender-info {
+            flex: 1;
+        }
+        
+        .email-detail-sender-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .email-detail-sender-email {
+            color: #5f6368;
+            font-size: 13px;
+        }
+        
+        .email-detail-date {
+            color: #5f6368;
+            font-size: 13px;
+            margin-left: auto;
+        }
+        
+        .email-detail-actions {
+            display: flex;
+            margin-top: 8px;
+        }
+        
+        .email-detail-action {
+            color: #5f6368;
+            font-size: 16px;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        
+        .email-detail-body {
+            padding: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .email-detail-body p {
+            margin-bottom: 16px;
+        }
+        
+        .email-detail-attachment {
+            margin-top: 20px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            max-width: 350px;
+            cursor: pointer;
+        }
+        
+        .email-detail-attachment:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .attachment-icon {
+            font-size: 24px;
+            color: #4285f4;
+            margin-right: 12px;
+        }
+        
+        .attachment-info {
+            flex: 1;
+        }
+        
+        .attachment-name {
+            font-weight: 500;
+        }
+        
+        .attachment-size {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .attachment-action {
+            color: #5f6368;
+            font-size: 18px;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .attachment-action:hover {
+            background-color: #e8eaed;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background-color: #1a73e8;
+            color: white;
+            font-weight: 500;
+            padding: 8px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1765cc;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .phishing-indicator {
+            cursor: pointer;
+            border-bottom: 1px dotted #888;
+        }
+        
+        /* 釣魚指標提示彈窗 */
+        .phishing-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1000;
+        }
+        
+        .phishing-popup-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .phishing-popup-icon {
+            color: #ea4335;
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .phishing-popup-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #ea4335;
+        }
+        
+        .phishing-popup-content {
+            margin-bottom: 16px;
+        }
+        
+        .phishing-popup-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .phishing-popup-button {
+            padding: 8px 16px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .found-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 998;
+            font-weight: 500;
+        }
+        
+        .found-counter-progress {
+            color: #1a73e8;
+            font-weight: bold;
+        }
+        
+        .found-counter-total {
+            color: #5f6368;
+        }
+        
+        .complete-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #e6f4ea;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1001;
+            text-align: center;
+        }
+        
+        .complete-message-icon {
+            color: #137333;
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .complete-message-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #137333;
+            margin-bottom: 12px;
+        }
+        
+        .complete-message-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .complete-message-button {
+            padding: 10px 24px;
+            background-color: #137333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 釣魚指標計數器 -->
+    <div class="found-counter">
+        找到釣魚指標：<span class="found-counter-progress">0</span>/<span class="found-counter-total">10</span>
+    </div>
+    
+    <!-- 完成訊息 -->
+    <div class="complete-message" id="completeMessage">
+        <div class="complete-message-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="complete-message-title">
+            恭喜！您已找出所有釣魚指標
+        </div>
+        <div class="complete-message-content">
+            您已成功識別出這封郵件中的所有釣魚跡象。保持這種警覺性能有效保護您的個人資訊安全！
+        </div>
+        <button class="complete-message-button" onclick="resetExercise()">
+            重新開始
+        </button>
+    </div>
+    
+    <!-- 釣魚指標彈窗 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="phishing-popup" id="phishingPopup">
+        <div class="phishing-popup-header">
+            <div class="phishing-popup-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="phishing-popup-title" id="popupTitle">
+                釣魚指標
+            </div>
+        </div>
+        <div class="phishing-popup-content" id="popupContent">
+            這是釣魚郵件的特徵之一。
+        </div>
+        <div class="phishing-popup-footer">
+            <button class="phishing-popup-button" onclick="closePopup()">
+                了解
+            </button>
+        </div>
+    </div>
+    
+    <!-- 頂部導航欄 -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <i class="fas fa-bars menu-icon"></i>
+            <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png" alt="Gmail" class="logo">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="搜尋郵件">
+            </div>
+        </div>
+        
+        <div class="navbar-right">
+            <i class="fas fa-question-circle navbar-icon"></i>
+            <i class="fas fa-cog navbar-icon"></i>
+            <i class="fas fa-th navbar-icon"></i>
+            <div class="profile-image">豪</div>
+        </div>
+    </div>
+    
+    <!-- 主要內容 -->
+    <div class="container">
+        <!-- 左側邊欄 -->
+        <div class="sidebar">
+            <div class="compose-btn">
+                <i class="fas fa-plus"></i>
+                撰寫
+            </div>
+            
+            <div class="menu-item active">
+                <i class="fas fa-inbox"></i>
+                收件匣
+                <span class="count">8</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-star"></i>
+                已加星號
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-clock"></i>
+                已延後
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-paper-plane"></i>
+                已傳送
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-file"></i>
+                草稿
+                <span class="count">2</span>
+            </div>
+            
+            <div class="menu-category">
+                類別
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-user-friends"></i>
+                社交
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-tag"></i>
+                促銷內容
+                <span class="count">5</span>
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-exclamation-circle"></i>
+                更新
+            </div>
+            
+            <div class="menu-item">
+                <i class="fas fa-users"></i>
+                論壇
+            </div>
+        </div>
+        
+        <!-- 電子郵件詳情 -->
+        <div class="email-detail">
+            <div class="email-detail-header">
+                <h1 class="email-detail-subject"><span class="phishing-indicator" data-id="1" onclick="showPopup(1)">【緊急】面試資料補件通知 - 創新科技</span></h1>
+                
+                <div class="email-detail-meta">
+                    <div class="email-detail-sender-avatar">王</div>
+                    
+                    <div class="email-detail-sender-info">
+                        <div class="email-detail-sender-name">
+                            王小姐 (<span class="phishing-indicator" data-id="2" onclick="showPopup(2)">hr.wang.creative-tech@gmail.com</span>)
+                        </div>
+                        <div class="email-detail-sender-email">
+                            至 我 ⟨抄送: <span class="phishing-indicator" data-id="3" onclick="showPopup(3)">hr-dept@creative-techs.co</span>⟩
+                        </div>
+                    </div>
+                    
+                    <div class="email-detail-date">
+                        6月10日 上午09:12
+                    </div>
+                </div>
+                
+                <div class="email-detail-actions">
+                    <div class="email-detail-action">
+                        <i class="fas fa-reply"></i>
+                    </div>
+                    <div class="email-detail-action">
+                        <i class="fas fa-share"></i>
+                    </div>
+                    <div class="email-detail-action">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                    <div class="email-detail-action">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="email-detail-body">
+                <p>黃阿豪先生您好，</p>
+                
+                <p>首先感謝您上週參加我們創新科技有限公司行政專員的面試。您的表現給我們留下了很好的印象！</p>
+                
+                <p>我是人力資源部的王小姐，負責處理您的面試後續事宜。在審核您的申請資料時，我們發現有幾項重要文件尚未齊全，需要您<span class="phishing-indicator" data-id="4" onclick="showPopup(4)">儘快補充提供</span>，以便我們能夠進行最終評估。</p>
+                
+                <p><span class="phishing-indicator" data-id="4" onclick="showPopup(4)">【請在今日下午5點前提供以下資料】</span></p>
+                
+                <ol>
+                    <li><span class="phishing-indicator" data-id="5" onclick="showPopup(5)">身分證正反面清晰照片</span>（用於身分驗證）</li>
+                    <li>最高學歷證書電子檔（請提供彩色掃描檔）</li>
+                    <li><span class="phishing-indicator" data-id="5" onclick="showPopup(5)">銀行帳戶資訊</span>（包含銀行名稱、分行、帳號，用於未來薪資發放）</li>
+                    <li><span class="phishing-indicator" data-id="5" onclick="showPopup(5)">詳細居住地址與緊急聯絡人資訊</span></li>
+                    <li>填寫附件中的員工基本資料表</li>
+                </ol>
+                
+                <p>為了加快處理流程，請您按照以下步驟操作：</p>
+                
+                <ol>
+                    <li>下載並填寫附件中的「<span class="phishing-indicator" data-id="6" onclick="showPopup(6)">員工基本資料表.docx</span>」</li>
+                    <li>點擊此連結上傳所有必要文件：<a href="#" class="phishing-indicator" data-id="7" onclick="showPopup(7)" style="color: #1a73e8; text-decoration: none;">https://creative-tech-secure-upload.com/hr-docs</a></li>
+                    <li><span class="phishing-indicator" data-id="8" onclick="showPopup(8)">如有任何疑問，請勿回覆此郵件，請直接聯繫我的個人手機：0912-345-678（因公司電話系統正在維修中）</span></li>
+                </ol>
+                
+                <p>請注意，由於本週五（6月15日）將召開人事委員會，<span class="phishing-indicator" data-id="4" onclick="showPopup(4)">如果您能在今日下午5點前提供這些資料</span>，我們將能夠在本週內確定最終錄取結果，並可能為您安排最快下週一入職。</p>
+                
+                <p>我們非常期待您能加入我們的團隊。<span class="phishing-indicator" data-id="9" onclick="showPopup(9)">根據您的資歷與表現，我們準備提供優於市場的薪資方案</span>，另有績效獎金與完整的保險福利。</p>
+                
+                <p>期待您的回覆！</p>
+                
+                <p>敬上，<br>
+                王曉雯<br>
+                人力資源專員<br>
+                創新科技有限公司<br>
+                Tel: <span class="phishing-indicator" data-id="8" onclick="showPopup(8)">0912-345-678</span><br>
+                Email: <span class="phishing-indicator" data-id="2" onclick="showPopup(2)">hr.wang.creative-tech@gmail.com</span></p>
+                
+                <p><span class="phishing-indicator" data-id="10" onclick="showPopup(10)">注：因公司郵件系統升級中，暫時使用Gmail發送郵件，請見諒。</span></p>
+            </div>
+            
+            <div class="email-detail-attachment" data-id="6" onclick="showPopup(6)">
+                <i class="fas fa-file-word attachment-icon"></i>
+                <div class="attachment-info">
+                    <div class="attachment-name">員工基本資料表.docx</div>
+                    <div class="attachment-size">32KB</div>
+                </div>
+                <div class="attachment-action">
+                    <i class="fas fa-cloud-download-alt"></i>
+                </div>
+            </div>
+            
+            <a href="#" class="btn-primary phishing-indicator" data-id="7" onclick="showPopup(7)">
+                上傳補充文件
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 釣魚指標資料
+        const phishingIndicators = {
+            1: {
+                title: "緊急性術語",
+                content: "釣魚郵件經常使用「緊急」、「立即」等詞彙製造時間壓力，迫使收件人倉促行動而忽略安全檢查。緊急性是最常見的社交工程手段之一，目的是讓人來不及思考就採取行動。"
+            },
+            2: {
+                title: "可疑的發件人電子郵件地址",
+                content: "正規公司通常會使用公司域名的電子郵件（如 name@company.com），而非免費的郵件服務如Gmail。此郵件使用個人Gmail帳戶發送，而非公司域名郵箱，這是明顯的釣魚跡象。"
+            },
+            3: {
+                title: "不一致的域名",
+                content: "注意抄送地址使用的域名「creative-techs.co」與發件人提到的公司名稱不完全匹配，多了一個's'。釣魚郵件經常使用與真實域名相似但略有不同的域名來欺騙收件人。"
+            },
+            4: {
+                title: "製造緊迫感和時間壓力",
+                content: "郵件中反覆強調「今日下午5點前」、「儘快」等時間限制，這是典型的緊迫感製造手法，目的是讓收件人在壓力下快速行動，沒有時間思考或核實郵件真實性。"
+            },
+            5: {
+                title: "要求敏感個人資訊",
+                content: "合法公司在面試階段不會要求提供如此詳細的個人資訊，尤其是身分證照片和銀行帳戶資訊。請求過多的個人敏感資訊是釣魚郵件的明顯特徵，這些資訊可被用於身分盜用。"
+            },
+            6: {
+                title: "可能含惡意軟體的附件",
+                content: "Word文件(.docx)可能包含惡意巨集或其他惡意程式。點擊或下載不明來源的附件是讓惡意軟體入侵您系統的常見方式。"
+            },
+            7: {
+                title: "可疑的網址/連結",
+                content: "「creative-tech-secure-upload.com」是可疑網址，通常釣魚網站會使用長且複雜的網址，或是看似正規但實際指向釣魚網站的連結。釣魚網站常模仿合法網站的外觀，用於竊取輸入的資料。"
+            },
+            8: {
+                title: "非正式溝通管道",
+                content: "要求透過個人手機而非公司正式管道聯繫是可疑的。合法的人資部門會使用公司電話或公司郵件系統。「請勿回覆此郵件」也是常見的釣魚手法，目的是引導受害者使用攻擊者控制的通訊渠道。"
+            },
+            9: {
+                title: "過於優厚的條件",
+                content: "提供「優於市場」的薪資，特別是高於應徵者期望的薪資，是常見的釣魚誘餌。這種「好得令人難以置信」的條件旨在降低收件人的警戒心，引誘其提供敏感資訊。"
+            },
+            10: {
+                title: "不尋常的解釋或藉口",
+                content: "「信件系統升級中」是個可疑的藉口，用來解釋為何使用Gmail而非公司郵件。釣魚郵件常使用各種藉口來解釋不尋常的情況，例如系統問題、技術故障等。"
+            }
+        };
+        
+        // 已找到的釣魚指標
+        const foundIndicators = {};
+        let foundCount = 0;
+        const totalIndicators = Object.keys(phishingIndicators).length;
+        
+        // 更新找到的指標計數
+        function updateCounter() {
+            document.querySelector('.found-counter-progress').textContent = foundCount;
+            document.querySelector('.found-counter-total').textContent = totalIndicators;
+            
+            // 如果找到所有指標，顯示完成訊息
+            if (foundCount === totalIndicators) {
+                document.getElementById('completeMessage').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            }
+        }
+        
+        // 初始化計數器
+        updateCounter();
+        
+        // 顯示釣魚指標彈窗
+        function showPopup(id) {
+            const indicator = phishingIndicators[id];
+            document.getElementById('popupTitle').textContent = indicator.title;
+            document.getElementById('popupContent').textContent = indicator.content;
+            document.getElementById('phishingPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            
+            // 如果是新找到的指標，增加計數
+            if (!foundIndicators[id]) {
+                foundIndicators[id] = true;
+                foundCount++;
+                updateCounter();
+                
+                // 標記已找到的指標
+                const elements = document.querySelectorAll(`[data-id="${id}"]`);
+                elements.forEach(el => {
+                    el.style.backgroundColor = '#ffebee';
+                    el.style.borderBottom = 'none';
+                });
+            }
+        }
+        
+        // 關閉彈窗
+        function closePopup() {
+            document.getElementById('phishingPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        // 重置練習
+        function resetExercise() {
+            // 重置計數和標記
+            foundCount = 0;
+            for (const id in foundIndicators) {
+                foundIndicators[id] = false;
+                
+                // 移除標記
+                const elements = document.querySelectorAll(`[data-id="${id}"]`);
+                elements.forEach(el => {
+                    el.style.backgroundColor = '';
+                    el.style.borderBottom = '1px dotted #888';
+                });
+            }
+            
+            // 更新計數器
+            updateCounter();
+            
+            // 關閉完成訊息
+            document.getElementById('completeMessage').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        // 其他元素點擊事件
+        document.querySelectorAll('.navbar-icon, .menu-icon, .profile-image, .menu-item, .compose-btn, .email-detail-action').forEach(element => {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('這是模擬畫面，只有標示的釣魚指標可以點擊。');
+            });
+        });
+    </script>
+</body>
+</html>
