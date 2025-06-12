@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣自來水公司 - 水費繳納平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 瀏覽器框架樣式 */
+        .browser-frame {
+            background-color: #f1f3f4;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px auto 0;
+            width: 90%;
+            max-width: 900px;
+            overflow: hidden;
+        }
+        
+        .browser-header {
+            background-color: #dee1e6;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .browser-buttons {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+        
+        .browser-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .browser-button.red {
+            background-color: #ff5f57;
+        }
+        
+        .browser-button.yellow {
+            background-color: #febc2e;
+        }
+        
+        .browser-button.green {
+            background-color: #28c840;
+        }
+        
+        .browser-tabs {
+            display: flex;
+            align-items: center;
+            margin-bottom: -1px;
+        }
+        
+        .browser-tab {
+            background-color: #f1f3f4;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+            margin-right: 2px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            max-width: 200px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border: 1px solid #dee1e6;
+            border-bottom: none;
+        }
+        
+        .browser-tab.active {
+            background-color: white;
+        }
+        
+        .browser-tab img {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+        
+        .browser-address-bar {
+            flex: 1;
+            background-color: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            height: 36px;
+            margin: 8px 16px 8px 0;
+        }
+        
+        .browser-address-icon {
+            color: #626365;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .browser-address-text {
+            flex: 1;
+            font-size: 14px;
+            color: #202124;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .browser-address-secure {
+            color: #626365;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        
+        .browser-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .browser-icon {
+            color: #626365;
+            margin-left: 16px;
+            font-size: 16px;
+        }
+        
+        .browser-content {
+            background-color: white;
+            padding: 0;
+            height: 600px;
+            overflow-y: auto;
+        }
+        
+        /* 台灣自來水公司網站樣式 */
+        .water-page {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .water-header {
+            background-color: #0072bc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .water-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .water-logo-text {
+            font-size: 22px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .water-nav {
+            display: flex;
+        }
+        
+        .water-nav-item {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .water-alert {
+            background-color: #ffd600;
+            color: #333;
+            padding: 10px 30px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .water-content {
+            padding: 30px;
+            flex: 1;
+        }
+        
+        .water-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0072bc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .water-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .water-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0072bc;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-input:focus {
+            border-color: #0072bc;
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: #0072bc;
+        }
+        
+        .payment-method.active {
+            border-color: #0072bc;
+            background-color: #e6f2ff;
+        }
+        
+        .payment-method img {
+            height: 30px;
+            margin-bottom: 8px;
+        }
+        
+        .payment-method-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .form-checkbox input {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .form-checkbox span {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0072bc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .submit-button:hover {
+            background-color: #005a9c;
+        }
+        
+        .bill-summary {
+            background-color: #f2f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .bill-row:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
+            font-weight: 600;
+        }
+        
+        .bill-label {
+            color: #666;
+        }
+        
+        .bill-value {
+            font-weight: 500;
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0072bc;
+            margin-bottom: 10px;
+        }
+        
+        .info-list {
+            list-style: none;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .info-item i {
+            color: #0072bc;
+            margin-right: 10px;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .security-badge i {
+            font-size: 18px;
+            margin-right: 8px;
+            color: #0072bc;
+        }
+        
+        .water-footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .water-footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .water-footer-link {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 13px;
+        }
+        
+        /* 釣魚指標相關樣式 */
+        .phishing-indicator {
+            cursor: pointer;
+            border-bottom: 1px dotted #888;
+        }
+        
+        /* 釣魚指標提示彈窗 */
+        .phishing-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1000;
+        }
+        
+        .phishing-popup-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .phishing-popup-icon {
+            color: #ea4335;
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        
+        .phishing-popup-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #ea4335;
+        }
+        
+        .phishing-popup-content {
+            margin-bottom: 16px;
+        }
+        
+        .phishing-popup-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .phishing-popup-button {
+            padding: 8px 16px;
+            background-color: #0072bc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .found-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 998;
+            font-weight: 500;
+        }
+        
+        .found-counter-progress {
+            color: #0072bc;
+            font-weight: bold;
+        }
+        
+        .found-counter-total {
+            color: #5f6368;
+        }
+        
+        .complete-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #e6f4ea;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            z-index: 1001;
+            text-align: center;
+        }
+        
+        .complete-message-icon {
+            color: #137333;
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .complete-message-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #137333;
+            margin-bottom: 12px;
+        }
+        
+        .complete-message-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .complete-message-button {
+            padding: 10px 24px;
+            background-color: #137333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- 釣魚指標計數器 -->
+    <div class="found-counter">
+        找到釣魚指標：<span class="found-counter-progress">0</span>/<span class="found-counter-total">10</span>
+    </div>
+    
+    <!-- 完成訊息 -->
+    <div class="complete-message" id="completeMessage">
+        <div class="complete-message-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="complete-message-title">
+            恭喜！您已找出所有釣魚指標
+        </div>
+        <div class="complete-message-content">
+            您已成功識別出這個自來水費詐騙網站的所有可疑之處。保持這種警覺性能有效保護您的個人資訊安全！
+        </div>
+        <button class="complete-message-button" onclick="resetExercise()">
+            重新開始
+        </button>
+    </div>
+    
+    <!-- 釣魚指標彈窗 -->
+    <div class="overlay" id="overlay"></div>
+    <div class="phishing-popup" id="phishingPopup">
+        <div class="phishing-popup-header">
+            <div class="phishing-popup-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="phishing-popup-title" id="popupTitle">
+                釣魚指標
+            </div>
+        </div>
+        <div class="phishing-popup-content" id="popupContent">
+            這是釣魚網站的特徵之一。
+        </div>
+        <div class="phishing-popup-footer">
+            <button class="phishing-popup-button" onclick="closePopup()">
+                了解
+            </button>
+        </div>
+    </div>
+    
+    <!-- 瀏覽器框架 -->
+    <div class="browser-frame">
+        <div class="browser-header">
+            <div class="browser-buttons">
+                <div class="browser-button red"></div>
+                <div class="browser-button yellow"></div>
+                <div class="browser-button green"></div>
+            </div>
+            
+            <div class="browser-tabs">
+                <div class="browser-tab active">
+                    <i class="fas fa-tint" style="color: #0072bc; margin-right: 8px;"></i>
+                    台灣自來水公司 - 水費繳納平台
+                </div>
+            </div>
+            
+            <div class="browser-address-bar">
+                <div class="browser-address-icon phishing-indicator" data-id="1" onclick="showPopup(1)">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="browser-address-text phishing-indicator" data-id="2" onclick="showPopup(2)">
+                    <span>http://</span><span>twwater-bill-payment.com</span><span>/payment/secure</span>
+                </div>
+                <div class="browser-address-secure phishing-indicator" data-id="1" onclick="showPopup(1)">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+            </div>
+            
+            <div class="browser-icons">
+                <div class="browser-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="browser-icon">
+                    <i class="fas fa-ellipsis-v"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="browser-content">
+            <div class="water-page">
+                <div class="water-header">
+                    <div class="water-logo">
+                        <i class="fas fa-tint fa-2x"></i>
+                        <div class="water-logo-text phishing-indicator" data-id="3" onclick="showPopup(3)">台灣自來水繳費中心</div>
+                    </div>
+                    
+                    <div class="water-nav">
+                        <a href="#" class="water-nav-item">首頁</a>
+                        <a href="#" class="water-nav-item">查詢</a>
+                        <a href="#" class="water-nav-item">繳費</a>
+                        <a href="#" class="water-nav-item">聯絡我們</a>
+                    </div>
+                </div>
+                
+                <div class="water-alert phishing-indicator" data-id="4" onclick="showPopup(4)">
+                    【緊急通知】因系統升級，請於 24 小時內完成繳費，否則將產生額外手續費！
+                </div>
+                
+                <div class="water-content">
+                    <h1 class="water-title">線上水費繳納平台</h1>
+                    
+                    <div class="water-card">
+                        <h2 class="water-card-title">繳費資料填寫</h2>
+                        
+                        <div class="bill-summary">
+                            <div class="bill-row">
+                                <div class="bill-label">繳費期限</div>
+                                <div class="bill-value">2025/06/13</div>
+                            </div>
+                            <div class="bill-row">
+                                <div class="bill-label">用水期間</div>
+                                <div class="bill-value">2025/05/01 - 2025/05/31</div>
+                            </div>
+                            <div class="bill-row">
+                                <div class="bill-label">用水度數</div>
+                                <div class="bill-value">18 度</div>
+                            </div>
+                            <div class="bill-row">
+                                <div class="bill-label">基本費</div>
+                                <div class="bill-value">NT$225.00</div>
+                            </div>
+                            <div class="bill-row">
+                                <div class="bill-label">水源保育費</div>
+                                <div class="bill-value">NT$20.00</div>
+                            </div>
+                            <div class="bill-row phishing-indicator" data-id="5" onclick="showPopup(5)">
+                                <div class="bill-label">系統處理費</div>
+                                <div class="bill-value">NT$50.00</div>
+                            </div>
+                            <div class="bill-row">
+                                <div class="bill-label">應繳總金額</div>
+                                <div class="bill-value">NT$295.00</div>
+                            </div>
+                        </div>
+                        
+                        <form>
+                            <div class="form-group">
+                                <label for="water-id" class="form-label">用戶編號</label>
+                                <input type="text" id="water-id" class="form-input" placeholder="請輸入10碼用戶編號" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="customer-name" class="form-label">用戶姓名</label>
+                                <input type="text" id="customer-name" class="form-input" placeholder="請輸入用戶姓名" required>
+                            </div>
+                            
+                            <div class="form-group phishing-indicator" data-id="6" onclick="showPopup(6)">
+                                <label for="id-number" class="form-label">身分證字號</label>
+                                <input type="text" id="id-number" class="form-input" placeholder="請輸入身分證字號" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">手機號碼</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="請輸入手機號碼" required>
+                            </div>
+                            
+                            <h3 class="water-card-title">付款方式</h3>
+                            
+                            <div class="payment-methods phishing-indicator" data-id="7" onclick="showPopup(7)">
+                                <div class="payment-method active">
+                                    <i class="fas fa-credit-card fa-2x" style="color: #0072bc; margin-bottom: 8px;"></i>
+                                    <div class="payment-method-name">信用卡/金融卡</div>
+                                </div>
+                                <div class="payment-method">
+                                    <i class="fas fa-money-bill-wave fa-2x" style="color: #0072bc; margin-bottom: 8px;"></i>
+                                    <div class="payment-method-name">ATM轉帳</div>
+                                </div>
+                                <div class="payment-method">
+                                    <i class="fas fa-store fa-2x" style="color: #0072bc; margin-bottom: 8px;"></i>
+                                    <div class="payment-method-name">超商繳費</div>
+                                </div>
+                                <div class="payment-method">
+                                    <i class="fab fa-bitcoin fa-2x" style="color: #0072bc; margin-bottom: 8px;"></i>
+                                    <div class="payment-method-name">加密貨幣</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="card-number" class="form-label">卡號</label>
+                                <input type="text" id="card-number" class="form-input" placeholder="請輸入16碼卡號" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="card-expiry" class="form-label">有效期限</label>
+                                <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="card-cvv" class="form-label">安全碼</label>
+                                <input type="text" id="card-cvv" class="form-input" placeholder="CVV" required>
+                            </div>
+                            
+                            <div class="form-group phishing-indicator" data-id="8" onclick="showPopup(8)">
+                                <label for="verification-code" class="form-label">安全驗證碼</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="verification-code" class="form-input" placeholder="請輸入6位數驗證碼" required style="flex: 1;">
+                                    <button type="button" style="padding: 0 15px; background: #0072bc; color: white; border: none; border-radius: 4px; cursor: pointer;">發送驗證碼</button>
+                                </div>
+                                <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                                    *為確保交易安全，請點擊「發送驗證碼」按鈕接收簡訊驗證碼
+                                </div>
+                            </div>
+                            
+                            <div class="form-checkbox phishing-indicator" data-id="9" onclick="showPopup(9)">
+                                <input type="checkbox" id="agreement" checked>
+                                <span>我同意將我的個人資料與付款資訊提供給第三方支付處理商，並接收相關促銷訊息</span>
+                            </div>
+                            
+                            <button type="button" class="submit-button">確認繳費</button>
+                        </form>
+                    </div>
+                    
+                    <div class="info-section">
+                        <h3 class="info-title">繳費注意事項</h3>
+                        <ul class="info-list">
+                            <li class="info-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>繳費完成後，系統將自動發送繳費證明至您的手機或電子信箱。</span>
+                            </li>
+                            <li class="info-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>若有任何問題，請撥打客服專線：0800-123-456。</span>
+                            </li>
+                            <li class="info-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>本平台使用最新加密技術，確保您的個人資料安全。</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="security-badges">
+                        <div class="security-badge">
+                            <i class="fas fa-lock"></i>
+                            <span>SSL 安全加密</span>
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>資料保護認證</span>
+                        </div>
+                        <div class="security-badge">
+                            <i class="fas fa-check-circle"></i>
+                            <span>政府認可平台</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="water-footer phishing-indicator" data-id="10" onclick="showPopup(10)">
+                    <div class="water-footer-links">
+                        <a href="#" class="water-footer-link">關於我們</a>
+                        <a href="#" class="water-footer-link">使用條款</a>
+                        <a href="#" class="water-footer-link">隱私政策</a>
+                        <a href="#" class="water-footer-link">聯絡我們</a>
+                    </div>
+                    <div>© 2023 台灣自來水繳費中心. All Rights Reserved. | 客服信箱：service@twwater-bills.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 釣魚指標資料
+        const phishingIndicators = {
+            1: {
+                title: "不安全的連接",
+                content: "注意瀏覽器顯示「不安全連接」警告圖標。合法的政府機構或公用事業網站一定使用HTTPS加密連接，而非HTTP。地址欄旁的警告三角形表示這是一個不安全的網站，輸入的個人資料和金融資訊可能被竊取。"
+            },
+            2: {
+                title: "可疑的網址",
+                content: "台灣自來水公司的官方網站域名是'water.gov.tw'，是政府網站的一部分。這個釣魚網站使用'twwater-bill-payment.com'，看似合理但實際上是釣魚者註冊的假域名。注意連字符的使用和非政府網站的域名後綴（.com而非.gov.tw）。"
+            },
+            3: {
+                title: "不正確的機構名稱",
+                content: "台灣自來水公司的正式名稱是「台灣自來水股份有限公司」，而這個網站使用「台灣自來水繳費中心」，這不是官方名稱。詐騙網站常使用類似但不完全正確的機構名稱，讓人誤以為是官方網站。"
+            },
+            4: {
+                title: "緊急通知與壓力術",
+                content: "「24小時內完成繳費，否則將產生額外手續費」是製造緊迫感的詐騙手法。真正的公用事業公司不會使用這種緊急通知，也不會威脅在短時間內增加費用。這是詐騙者常用的壓力術，迫使人倉促行動而忽略安全檢查。"
+            },
+            5: {
+                title: "可疑的費用項目",
+                content: "「系統處理費」是一個不尋常的收費項目，台灣自來水公司的正式水費帳單不包含這種費用。詐騙網站經常添加額外的費用項目，以增加「獲利」。在正常的水費帳單中，費用項目通常只包括基本費、用水費和水源保育費等標準項目。"
+            },
+            6: {
+                title: "要求過多的個人資訊",
+                content: "繳納水費不需要提供身分證字號。合法的公用事業繳費只需要用戶編號和繳費金額，不會要求高度敏感的個人身份資訊。詐騙網站索取這些資料的目的是進行身份盜用。"
+            },
+            7: {
+                title: "不尋常的付款選項",
+                content: "「加密貨幣」不是台灣自來水公司會提供的付款方式。正規的公用事業繳費通常只接受信用卡、金融卡、ATM轉帳或超商代收等傳統付款方式。加密貨幣支付選項在詐騙網站中很常見，因為這類交易通常無法追蹤或撤銷。"
+            },
+            8: {
+                title: "不必要的驗證步驟",
+                content: "正常的水費繳納不需要簡訊驗證碼。這是詐騙者用來收集您手機號碼的額外步驟，可能會用於後續詐騙或出售給其他詐騙集團。合法的繳費網站如需驗證，通常是在登入階段而非付款階段。"
+            },
+            9: {
+                title: "可疑的同意條款",
+                content: "「我同意將個人資料與付款資訊提供給第三方支付處理商，並接收相關促銷訊息」這類選項在正規公用事業網站上不會出現。台灣自來水公司不會與第三方分享您的資料用於促銷目的。這是詐騙網站為合法收集和使用您資料的藉口。"
+            },
+            10: {
+                title: "不正確的版權資訊和聯絡方式",
+                content: "頁面底部顯示「© 2023 台灣自來水繳費中心」而非正確的「台灣自來水股份有限公司」，且年份過時（現在是2025年）。聯絡信箱使用非官方域名（service@twwater-bills.com），而非政府機構的官方域名。真實的台灣自來水公司網站會使用官方的政府網域電子郵件地址。"
+            }
+        };
+        
+        // 已找到的釣魚指標
+        const foundIndicators = {};
+        let foundCount = 0;
+        const totalIndicators = Object.keys(phishingIndicators).length;
+        
+        // 更新找到的指標計數
+        function updateCounter() {
+            document.querySelector('.found-counter-progress').textContent = foundCount;
+            document.querySelector('.found-counter-total').textContent = totalIndicators;
+            
+            // 如果找到所有指標，顯示完成訊息
+            if (foundCount === totalIndicators) {
+                document.getElementById('completeMessage').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            }
+        }
+        
+        // 初始化計數器
+        updateCounter();
+        
+        // 顯示釣魚指標彈窗
+        function showPopup(id) {
+            const indicator = phishingIndicators[id];
+            document.getElementById('popupTitle').textContent = indicator.title;
+            document.getElementById('popupContent').textContent = indicator.content;
+            document.getElementById('phishingPopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            
+            // 如果是新找到的指標，增加計數
+            if (!foundIndicators[id]) {
+                foundIndicators[id] = true;
+                foundCount++;
+                updateCounter();
+                
+                // 標記已找到的指標
+                const elements = document.querySelectorAll(`[data-id="${id}"]`);
+                elements.forEach(el => {
+                    el.style.backgroundColor = '#ffebee';
+                    el.style.borderBottom = 'none';
+                });
+            }
+        }
+        
+        // 關閉彈窗
+        function closePopup() {
+            document.getElementById('phishingPopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        // 重置練習
+        function resetExercise() {
+            // 重置計數和標記
+            foundCount = 0;
+            for (const id in foundIndicators) {
+                foundIndicators[id] = false;
+                
+                // 移除標記
+                const elements = document.querySelectorAll(`[data-id="${id}"]`);
+                elements.forEach(el => {
+                    el.style.backgroundColor = '';
+                    el.style.borderBottom = '1px dotted #888';
+                });
+            }
+            
+            // 更新計數器
+            updateCounter();
+            
+            // 關閉完成訊息
+            document.getElementById('completeMessage').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        
+        // 其他元素點擊事件
+        document.querySelectorAll('input, select, a:not(.phishing-indicator), button:not(.phishing-indicator):not(.complete-message-button):not(.phishing-popup-button)').forEach(element => {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('這是模擬畫面，只有標示的釣魚指標可以點擊。真實詐騙網站可能會竊取您輸入的資訊。');
+            });
+        });
+    </script>
+</body>
+</html>
